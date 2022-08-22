@@ -6,56 +6,27 @@ class SubscribersController < ApplicationController
   ##
   # GET /api/subscribers
   def index
-    subscribers = [
-      {
-        id: 1,
-        name: "Rick Sanchez",
-        email: "rickc137@citadel.com",
-        status: "active"
-      },
-      {
-        id: 2,
-        name: "Morty Smith",
-        email: "morty.smith@gmail.com",
-        status: "inactive"
-      },
-      {
-        id: 3,
-        name: "Jerry Smith",
-        email: "jerry.smith@aol.com",
-        status: "active"
-      },
-      {
-        id: 4,
-        name: "Beth Smith",
-        email: "beth.smith@gmail.com",
-        status: "active"
-      },
-      {
-        id: 5,
-        name: "Summer Smith",
-        email: "summer.smith@gmail.com",
-        status: "active"
-      },
-      {
-        id: 6,
-        name: "Bird Person",
-        email: "bird.person@birdworld.com",
-        status: "active"
-      }
-    ]
+    @subscribers = Subscriber.all
 
-    total_records = subscribers.count
-    limited_subscribers = subscribers.drop(offset).first(limit)
+    total_records = @subscribers.count
+    limited_subscribers = @subscribers.drop(offset).first(limit)
 
     render json: {subscribers: limited_subscribers, pagination: pagination(total_records)}, formats: :json
   end
 
   def create
+    Subscriber.create(subscriber_params)
     render json: {message: "Subscriber created successfully"}, formats: :json, status: :created
   end
 
   def update
+    Subscriber.update(subscriber_params)
     render json: {message: "Subscriber updated successfully"}, formats: :json, status: :ok
+  end
+
+  private
+
+  def subscriber_params
+    params.permit(:name, :email)
   end
 end
