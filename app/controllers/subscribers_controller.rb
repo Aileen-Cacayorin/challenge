@@ -20,13 +20,14 @@ class SubscribersController < ApplicationController
   end
 
   def update
-    Subscriber.update(subscriber_params)
+    @subscriber = Subscriber.find(params[:id])
+    @subscriber.update(subscriber_params)
     render json: {message: "Subscriber updated successfully"}, formats: :json, status: :ok
   end
 
   private
 
   def subscriber_params
-    params.permit(:name, :email)
+    params.permit(:name, :email, :status)
   end
 end

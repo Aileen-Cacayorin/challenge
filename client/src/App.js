@@ -72,6 +72,7 @@ function App() {
 
   const onSuccessAddSubscriber = () => {
     setShowAddModal(false)
+    refreshSubscribers()
   }
 
   const onUpdateStatusSelectected = (subscriberId, status) => {
