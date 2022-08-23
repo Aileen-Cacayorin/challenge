@@ -15,14 +15,24 @@ class SubscribersController < ApplicationController
   end
 
   def create
-    Subscriber.create(subscriber_params)
-    render json: {message: "Subscriber created successfully"}, formats: :json, status: :created
+    @subscriber = Subscriber.create(subscriber_params)
+
+    if @subscriber.save
+        render json: { message: "Subscriber created successfully"}, formats: :json, status: :created
+    else 
+       render :json => { :errors => @subscriber.errors } 
+    end
   end
 
   def update
     @subscriber = Subscriber.find(params[:id])
     @subscriber.update(subscriber_params)
-    render json: {message: "Subscriber updated successfully"}, formats: :json, status: :ok
+
+    if @subscriber.save
+       render json: { message: "Subscriber created successfully"}, formats: :json, status: :created
+    else 
+       render :json => { :errors => @subscriber.errors } 
+    end
   end
 
   private
