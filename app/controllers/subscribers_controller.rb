@@ -29,7 +29,7 @@ class SubscribersController < ApplicationController
     @subscriber.update(subscriber_params)
 
     if @subscriber.save
-       render json: { message: "Subscriber created successfully"}, formats: :json, status: :created
+       render json: { message: "Subscriber updated successfully"}, formats: :json, status: 200
     else 
        render :json => { :errors => @subscriber.errors.full_messages }, status: 500
     end
