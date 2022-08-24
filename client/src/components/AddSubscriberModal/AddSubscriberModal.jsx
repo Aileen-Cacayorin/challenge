@@ -10,6 +10,7 @@ const AddSubscriberModal = (props) => {
   const [isSaving, setIsSaving] = useState(false)
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
+  const [errors, setErrors] = useState([])
 
   const handleChange = (e) => {
     const { target: { name, value }} = e
@@ -34,8 +35,11 @@ const AddSubscriberModal = (props) => {
     .catch((payload) => {
       const error = payload?.response?.data?.message || 'Something went wrong'
       console.error(error)
+      setErrors(error)
+
     })
     .finally(() => {
+      setErrors([])
       setIsSaving(false)
     })
   }
@@ -44,6 +48,12 @@ const AddSubscriberModal = (props) => {
     <Modal modalTitle="Add Subscriber" showModal={isOpen} onCloseModal={onClose}>
       <>
         <ModalBody>
+          {  errors.length > 0 && 
+            errors.map((error) => (
+               <li>{error}</li>
+              )
+            ) 
+          }
           <form className="my-4 text-blueGray-500 text-lg leading-relaxed">
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">

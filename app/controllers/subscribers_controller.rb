@@ -20,7 +20,7 @@ class SubscribersController < ApplicationController
     if @subscriber.save
         render json: { message: "Subscriber created successfully"}, formats: :json, status: :created
     else 
-       render :json => { :errors => @subscriber.errors } 
+       render :json => { :message => @subscriber.errors.full_messages  }, status: 500
     end
   end
 
@@ -31,7 +31,7 @@ class SubscribersController < ApplicationController
     if @subscriber.save
        render json: { message: "Subscriber created successfully"}, formats: :json, status: :created
     else 
-       render :json => { :errors => @subscriber.errors } 
+       render :json => { :errors => @subscriber.errors.full_messages }, status: 500
     end
   end
 
