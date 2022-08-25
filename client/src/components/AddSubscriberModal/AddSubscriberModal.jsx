@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import Button, { SecondaryButton } from '../Button'
 import Modal, { ModalBody, ModalFooter } from '../Modal'
 
+import Alert from '../Alert'
+
 import { createSubscriber } from "../../services/subscriber";
 
 const AddSubscriberModal = (props) => {
@@ -31,6 +33,7 @@ const AddSubscriberModal = (props) => {
     createSubscriber(payload)
     .then(() => {
       onSuccess()
+      setErrors([])
     })
     .catch((payload) => {
       const error = payload?.response?.data?.message || 'Something went wrong'
@@ -39,7 +42,6 @@ const AddSubscriberModal = (props) => {
 
     })
     .finally(() => {
-      setErrors([])
       setIsSaving(false)
     })
   }
@@ -48,12 +50,7 @@ const AddSubscriberModal = (props) => {
     <Modal modalTitle="Add Subscriber" showModal={isOpen} onCloseModal={onClose}>
       <>
         <ModalBody>
-          {  errors.length > 0 && 
-            errors.map((error) => (
-               <li>{error}</li>
-              )
-            ) 
-          }
+          {  errors.length > 0 && <Alert messages={errors}/> }
           <form className="my-4 text-blueGray-500 text-lg leading-relaxed">
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">

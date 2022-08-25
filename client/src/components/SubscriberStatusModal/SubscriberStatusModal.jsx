@@ -2,6 +2,8 @@ import { useState } from "react";
 import Modal, { ModalBody, ModalFooter } from '../Modal'
 import PropTypes from 'prop-types';
 
+import Alert from '../Alert'
+
 // Components
 import Button, { SecondaryButton } from '../Button';
 
@@ -45,12 +47,7 @@ const SubscriberStatusModal = (props) => {
     <Modal modalTitle={modalTitleText} showModal={isOpen} onCloseModal={onClose}>
       <>
         <ModalBody>
-        {  errors.length > 0 && 
-            errors.map((error) => (
-               <li>{error}</li>
-              )
-            ) 
-          }
+          { errors.length > 0 && <Alert messages={errors}/> }
           {messageBodyText}
         </ModalBody>
         <ModalFooter>
