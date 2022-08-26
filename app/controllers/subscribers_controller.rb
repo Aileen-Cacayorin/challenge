@@ -6,56 +6,38 @@ class SubscribersController < ApplicationController
   ##
   # GET /api/subscribers
   def index
-    subscribers = [
-      {
-        id: 1,
-        name: "Rick Sanchez",
-        email: "rickc137@citadel.com",
-        status: "active"
-      },
-      {
-        id: 2,
-        name: "Morty Smith",
-        email: "morty.smith@gmail.com",
-        status: "inactive"
-      },
-      {
-        id: 3,
-        name: "Jerry Smith",
-        email: "jerry.smith@aol.com",
-        status: "active"
-      },
-      {
-        id: 4,
-        name: "Beth Smith",
-        email: "beth.smith@gmail.com",
-        status: "active"
-      },
-      {
-        id: 5,
-        name: "Summer Smith",
-        email: "summer.smith@gmail.com",
-        status: "active"
-      },
-      {
-        id: 6,
-        name: "Bird Person",
-        email: "bird.person@birdworld.com",
-        status: "active"
-      }
-    ]
+    @subscribers = Subscriber.all
 
-    total_records = subscribers.count
-    limited_subscribers = subscribers.drop(offset).first(limit)
+    total_records = @subscribers.count
+    limited_subscribers = @subscribers.drop(offset).first(limit)
 
     render json: {subscribers: limited_subscribers, pagination: pagination(total_records)}, formats: :json
   end
 
   def create
-    render json: {message: "Subscriber created successfully"}, formats: :json, status: :created
+    @subscriber = Subscriber.create(subscriber_params)
+
+    if @subscriber.save
+        render json: { message: "Subscriber created successfully"}, formats: :json, status: :created
+    else 
+       render :json => { :message => @subscriber.errors.full_messages  }, status: 500
+    end
   end
 
   def update
-    render json: {message: "Subscriber updated successfully"}, formats: :json, status: :ok
+    @subscriber = Subscriber.find(params[:id])
+    @subscriber.update(subscriber_params)
+
+    if @subscriber.save
+       render json: { message: "Subscriber updated successfully"}, formats: :json, status: 200
+    else 
+       render :json => { :message => @subscriber.errors.full_messages }, status: 500
+    end
+  end
+
+  private
+
+  def subscriber_params
+    params.permit(:name, :email, :status)
   end
 end
